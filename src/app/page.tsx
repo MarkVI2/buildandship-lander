@@ -56,7 +56,7 @@ export default function Home() {
       description:
         "An app that helps the students of Mahindra University to sync their class time table and other college events to their google calendar.",
       image: "/projects/logo.png",
-      link: "https://mucalsync.vercel.app",
+      link: "https://mucalsync.buildandship.org",
     },
     {
       title: "UniSwap",
@@ -70,7 +70,7 @@ export default function Home() {
       description:
         "We hope your ready, another project is gonna be launching soon.",
       image: "/projects/Under Dev project logo.png",
-      link: "https://muscope.vercel.app",
+      link: "https://buildandship.org/projects",
     },
     // Add more projects here
   ];

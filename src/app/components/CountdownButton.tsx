@@ -30,7 +30,7 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
       setShowArrows(false);
       setTimeout(() => {
         setButtonState("unlocked");
-      }, 300);
+      }, 800);
     } else if (buttonState === "unlocked") {
       setIsCountingDown(true);
     }
