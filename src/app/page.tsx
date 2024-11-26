@@ -56,7 +56,7 @@ export default function Home() {
       description:
         "An app that helps the students of Mahindra University to sync their class time table and other college events to their google calendar.",
       image: "/projects/logo.png",
-      link: "https://mucalsync.vercel.app",
+      link: "https://mucalsync.buildandship.org/",
     },
     {
       title: "UniSwap",
@@ -77,6 +77,7 @@ export default function Home() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrollingAllowed, setIsScrollingAllowed] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -213,6 +214,16 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Privacy Policy Button */}
+        <a 
+          href="/privacy" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 text-sm"
+        >
+          Privacy Policy
+        </a>
       </main>
     </div>
   );
