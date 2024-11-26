@@ -10,12 +10,24 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
   const [buttonState, setButtonState] = useState<
     "locked" | "unlocking" | "unlocked"
   >("locked");
+  const [showArrows, setShowArrows] = useState(true);
+
+  useEffect(() => {
+    // Check if button was pressed before
+    const wasButtonPressed = localStorage.getItem("buttonPressed");
+    if (wasButtonPressed) {
+      setShowArrows(false);
+    }
+  }, []);
 
   const handleClick = () => {
     if (isCountingDown) return;
 
     if (buttonState === "locked") {
       setButtonState("unlocking");
+      // Store that button was pressed
+      localStorage.setItem("buttonPressed", "true");
+      setShowArrows(false);
       setTimeout(() => {
         setButtonState("unlocked");
       }, 300);
@@ -48,7 +60,7 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
 
   return (
     <div className="relative inline-block">
-      {buttonState === "locked" && (
+      {buttonState === "locked" && showArrows && (
         <div className="arrow-container">
           {["left", "right"].map((position) => (
             <svg
