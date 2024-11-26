@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface CountdownButtonProps {
   onComplete: () => void;
@@ -7,17 +7,19 @@ interface CountdownButtonProps {
 export default function CountdownButton({ onComplete }: CountdownButtonProps) {
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [count, setCount] = useState(3);
-  const [buttonState, setButtonState] = useState<'locked' | 'unlocking' | 'unlocked'>('locked');
+  const [buttonState, setButtonState] = useState<
+    "locked" | "unlocking" | "unlocked"
+  >("locked");
 
   const handleClick = () => {
     if (isCountingDown) return;
 
-    if (buttonState === 'locked') {
-      setButtonState('unlocking');
+    if (buttonState === "locked") {
+      setButtonState("unlocking");
       setTimeout(() => {
-        setButtonState('unlocked');
+        setButtonState("unlocked");
       }, 300);
-    } else if (buttonState === 'unlocked') {
+    } else if (buttonState === "unlocked") {
       setIsCountingDown(true);
     }
   };
@@ -26,56 +28,62 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
     if (isCountingDown && count > 0) {
       const timer = setTimeout(() => {
         setCount(count - 1);
-      }, 500);
+      }, 830);
 
       return () => clearTimeout(timer);
     }
 
     if (count === 0) {
-      const projectsSection = document.getElementById('projects');
-      projectsSection?.scrollIntoView({ behavior: 'smooth' });
+      const projectsSection = document.getElementById("projects");
+      projectsSection?.scrollIntoView({ behavior: "smooth" });
       onComplete();
       // Reset after scrolling
       setTimeout(() => {
         setCount(3);
         setIsCountingDown(false);
-        setButtonState('locked');
+        setButtonState("locked");
       }, 1000);
     }
   }, [isCountingDown, count, onComplete]);
 
   return (
     <div className="relative inline-block">
-      {buttonState === 'locked' && (
+      {buttonState === "locked" && (
         <div className="arrow-container">
-          {['top-right', 'top-left', 'bottom-right', 'bottom-left'].map((position) => (
-            <svg 
+          {["left", "right"].map((position) => (
+            <svg
               key={position}
               className={`arrow ${position}`}
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M4 12l8 8 8-8-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12z" />
+              width="150"
+              height="200"
+              viewBox="0 0 150 200"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M75 20 L75 0 L65 15 M75 0 L85 15" /* Arrow head */
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d={
+                  position === "left"
+                    ? "M75 0 C75 80, 20 120, 20 200" /* Left curved path - adjusted curve */
+                    : "M75 0 C75 80, 130 120, 130 200" /* Right curved path - adjusted curve */
+                }
+              />
             </svg>
           ))}
         </div>
       )}
-      <div 
+      <div
         className={`
           countdown-button-container 
           ${buttonState} 
-          ${buttonState === 'locked' ? 'active' : ''} 
-          ${isCountingDown ? 'pressed' : ''}
+          ${buttonState === "locked" ? "active" : ""} 
+          ${isCountingDown ? "pressed" : ""}
         `}
-        onClick={handleClick}
-      >
-        <button
-          className="countdown-button"
-          disabled={isCountingDown}
-        >
-          <span>
-            {isCountingDown ? count : "Launch"}
-          </span>
+        onClick={handleClick}>
+        <button className="countdown-button" disabled={isCountingDown}>
+          <span>{isCountingDown ? count : "Launch"}</span>
         </button>
       </div>
     </div>
