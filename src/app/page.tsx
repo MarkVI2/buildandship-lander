@@ -29,7 +29,7 @@ export default function Home() {
       role: "Shipper",
       image: "/team/Akshith.jpg",
       bio: "BA undergrad with a passion for entrepreneurship.",
-      linkedin: "",
+      linkedin: "https://www.linkedin.com/in/akshith-bathena/",
     },
     {
       name: "Atharv Garg",
