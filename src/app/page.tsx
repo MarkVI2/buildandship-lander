@@ -27,9 +27,9 @@ export default function Home() {
     {
       name: "Akshith Bathena",
       role: "Shipper",
-      image: "/team/john.jpg",
+      image: "/team/Akshith.jpg",
       bio: "BA undergrad with a passion for entrepreneurship.",
-      linkedin: "",
+      linkedin: "https://www.linkedin.com/in/akshith-bathena/",
     },
     {
       name: "Atharv Garg",
@@ -68,7 +68,7 @@ export default function Home() {
     {
       title: "New Project!!",
       description:
-        "We hope your ready, another project is gonna be launching soon.",
+        "We hope you're ready, another project is gonna be launching soon.",
       image: "/projects/Under Dev project logo.png",
       link: "https://buildandship.org/projects",
     },

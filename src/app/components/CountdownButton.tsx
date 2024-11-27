@@ -10,24 +10,12 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
   const [buttonState, setButtonState] = useState<
     "locked" | "unlocking" | "unlocked"
   >("locked");
-  const [showArrows, setShowArrows] = useState(true);
-
-  useEffect(() => {
-    // Check if button was pressed before
-    const wasButtonPressed = localStorage.getItem("buttonPressed");
-    if (wasButtonPressed) {
-      setShowArrows(false);
-    }
-  }, []);
 
   const handleClick = () => {
     if (isCountingDown) return;
 
     if (buttonState === "locked") {
       setButtonState("unlocking");
-      // Store that button was pressed
-      localStorage.setItem("buttonPressed", "true");
-      setShowArrows(false);
       setTimeout(() => {
         setButtonState("unlocked");
       }, 800);
@@ -60,9 +48,9 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
 
   return (
     <div className="relative inline-block">
-      {buttonState === "locked" && showArrows && (
+      {buttonState === "locked" && (
         <div className="arrow-container">
-          {["left", "right"].map((position) => (
+          {["left", "right", "side-left", "side-right"].map((position) => (
             <svg
               key={position}
               className={`arrow ${position}`}
@@ -71,15 +59,15 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
               viewBox="0 0 150 200"
               xmlns="http://www.w3.org/2000/svg">
               <path
-                d="M75 20 L75 0 L65 15 M75 0 L85 15" /* Arrow head */
+                d="M75 20 L75 0 L65 15 M75 0 L85 15"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
                 d={
-                  position === "left"
-                    ? "M75 0 C75 80, 20 120, 20 200" /* Left curved path - adjusted curve */
-                    : "M75 0 C75 80, 130 120, 130 200" /* Right curved path - adjusted curve */
+                  position.includes("left")
+                    ? "M75 0 C75 80, 20 120, 20 200"
+                    : "M75 0 C75 80, 130 120, 130 200"
                 }
               />
             </svg>
