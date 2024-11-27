@@ -101,7 +101,7 @@ export default function Home() {
   return (
     <div className={`min-h-screen ${!isScrollingAllowed ? "scroll-lock" : ""}`}>
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-[60] px-6 py-4 flex justify-between items-center backdrop-blur-sm">
+      <header className="fixed top-0 left-0 w-full z-[60] px-6 py-4 flex justify-between items-center bg-white bg-opacity-80">
         <Link href="/">
           <h1 className="text-2xl font-bold">Build & Ship</h1>
         </Link>
