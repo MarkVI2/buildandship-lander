@@ -25,7 +25,7 @@ export default function Home() {
       linkedin: "https://www.linkedin.com/in/ashish-ahuja-548368274/",
     },
     {
-      name: "Akshith Banethi",
+      name: "Akshith Bathena",
       role: "Shipper",
       image: "/team/john.jpg",
       bio: "BA undergrad with a passion for entrepreneurship.",
