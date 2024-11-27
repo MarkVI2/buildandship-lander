@@ -7,19 +7,15 @@ interface CountdownButtonProps {
 export default function CountdownButton({ onComplete }: CountdownButtonProps) {
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [count, setCount] = useState(3);
-  const [buttonState, setButtonState] = useState<
-    "locked" | "unlocking" | "unlocked"
-  >("locked");
+  const [buttonState, setButtonState] = useState<"locked" | "unlocked">(
+    "locked"
+  );
 
   const handleClick = () => {
     if (isCountingDown) return;
 
     if (buttonState === "locked") {
-      setButtonState("unlocking");
-      setTimeout(() => {
-        setButtonState("unlocked");
-      }, 800);
-    } else if (buttonState === "unlocked") {
+      setButtonState("unlocked");
       setIsCountingDown(true);
     }
   };
@@ -74,18 +70,17 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
           ))}
         </div>
       )}
-      <div
+      <button
         className={`
-          countdown-button-container 
+          countdown-button
           ${buttonState} 
           ${buttonState === "locked" ? "active" : ""} 
           ${isCountingDown ? "pressed" : ""}
         `}
-        onClick={handleClick}>
-        <button className="countdown-button" disabled={isCountingDown}>
-          <span>{isCountingDown ? count : "Launch"}</span>
-        </button>
-      </div>
+        onClick={handleClick}
+        disabled={isCountingDown}>
+        <span>{isCountingDown ? count : "Launch"}</span>
+      </button>
     </div>
   );
 }

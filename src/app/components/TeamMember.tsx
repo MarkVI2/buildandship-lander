@@ -48,20 +48,20 @@ export default function TeamMember({
                 }}
               />
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300">
-                <div className="absolute inset-0 flex flex-col justify-center items-center p-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <h3 className="text-xl font-bold mb-2">{name}</h3>
-                  <p className="text-sm font-medium mb-2">{role}</p>
-                  <p className="text-sm mb-4">{bio}</p>
+                <div className="absolute inset-0 flex flex-col justify-center items-center p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <h3 className="text-lg font-bold mb-2">{name}</h3>
+                  <p className="text-xs font-medium mb-2">{role}</p>
+                  <p className="text-xs mb-4">{bio}</p>
 
                   {/* Social Icons */}
-                  <div className="flex gap-4 mt-2">
+                  <div className="flex gap-3 mt-2">
                     {linkedin && (
                       <a
                         href={linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white hover:opacity-80 transition-opacity">
-                        <IconBrandLinkedin size={32} strokeWidth={2} />
+                        <IconBrandLinkedin size={24} strokeWidth={2} />
                       </a>
                     )}
                     {github && (
@@ -70,7 +70,7 @@ export default function TeamMember({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white hover:opacity-80 transition-opacity">
-                        <IconBrandGithub size={32} strokeWidth={2} />
+                        <IconBrandGithub size={24} strokeWidth={2} />
                       </a>
                     )}
                   </div>

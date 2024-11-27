@@ -77,7 +77,7 @@ export default function Home() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrollingAllowed, setIsScrollingAllowed] = useState(false);
-  const [showPrivacy, setShowPrivacy] = useState(false);
+  //const [showPrivacy, setShowPrivacy] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -130,6 +130,12 @@ export default function Home() {
             onClick={() => setIsMenuOpen(false)}>
             Our Projects
           </Link>
+          <Link
+            href="/privacy"
+            className="menu-item"
+            onClick={() => setIsMenuOpen(false)}>
+            Privacy Policy
+          </Link>
         </div>
       </div>
 
@@ -138,12 +144,12 @@ export default function Home() {
         {/* Hero Section */}
         <section className="h-screen flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
               We <span className="frijole-regular">Build</span> 🛠️
               <br />
               We <span className="font-sacramento">Ship</span> 🚀
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600">
+            <p className="text-base md:text-xl text-gray-600">
               Turning ideas into reality, one project at a time.
             </p>
             <br />
@@ -157,7 +163,7 @@ export default function Home() {
           className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20">
           <div ref={sectionRef} className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-8">
                 Things we have &quot;launched&quot;
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -182,7 +188,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <div className="flex items-center justify-center mb-8">
-                <h2 className="text-4xl md:text-5xl font-bold">
+                <h2 className="text-3xl md:text-4xl font-bold">
                   Who pressed the button?
                 </h2>
               </div>
@@ -214,15 +220,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Privacy Policy Button */}
-        <a
-          href="/privacy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 text-sm">
-          Privacy Policy
-        </a>
       </main>
     </div>
   );

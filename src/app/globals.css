@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-size: calc(14px + 0.390625vw);
+  }
+}
+
 :root {
   --background: #ffffff;
   --text: #1a1a1a;
@@ -166,117 +172,42 @@ body {
   will-change: transform;
 }
 
-.countdown-button-container {
-  z-index: 2;
-  position: relative;
-  margin-top: 15px;
-  box-shadow: inset 0px 1px 1px 0px rgba(73, 73, 73, 0.5);
-  border-radius: 5px;
-  min-height: 40px;
-  min-width: 190px;
-  display: inline-block;
-}
-
-.countdown-button-container.locked::before,
-.countdown-button-container.unlocking::before,
-.countdown-button-container.locked::after,
-.countdown-button-container.unlocking::after {
-  cursor: pointer;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 5px;
-  z-index: 100;
-  transform: translate(0, 0) scale(1, 1);
-  background-position: center center;
-  background-repeat: no-repeat;
-  transition: all 0.2s;
-  opacity: 1;
-  line-height: 60px;
-  font-size: 14px;
-  content: "Click me!!";
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.countdown-button-container.locked::before,
-.countdown-button-container.unlocking::before {
-  content: "";
-  display: block;
-}
-
-.countdown-button-container.active.locked::before {
-  background-color: rgba(73, 73, 73, 0.9);
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2);
-}
-
-.countdown-button-container.active.locked:hover::before,
-.countdown-button-container.unlocking::before {
-  transform: translate(0, -10px) scale(1, 1);
-  background-color: rgba(73, 73, 73, 0.7);
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAABGCAYAAAC69QZ6AAAAAXNSR0IArs4c6QAAAyxJREFUaAXtmjtoFFEUhjNB17cQQfEBNlaCiGKhoMI2IiiIGDsfIFaChaWFYEBLUwppFGxsoiABUXwVEa0UU9iqMRFJMNGIhigmrt8/2V3Y7L2zZnNmMuI98DMz55z7nz9n7p2Z7EzU0qSVSqU2hh4ERbABrAPrwUowDD6W8ZbtXfA0iqIptukb4haBM+Ax+AVmY6Mk3wDF1JRC3gpOgH5gYfcg2WoqGMLtoM9C3QyOKY6vgWVzFgzJUTAO0jQ1YWNTYhkYgQ7wG2RhwxTZnSQ2cgUZ1IH/ois2wzfJcS94CAaAVvo4WAt0BdgGDpX32SSaxu3hytCXmFUJIlKnu1Enh8g5C3SJSjRydHZ2gR7QyN6TsCaRUEGStHCS5qQWwGWwvCGZI4Fxe8FrkGTPCBYcw6ddBHUJSlrdX4kf8BL8ZQCOFaBRd8976Rh8EvjsC4Et3sGzDMClplz3FcM/BlbV0eLUHUfzw2WTOPfXDZqjA86FoNdVsOzrrCtBQLdFn12oG2DkoOBqMOIp/EPxmlI4nniSB/Evrkk2PoD/nKe23Ker5ThoA74HjFPVxJR2qF0A74DLeqpliR53ZeDTZWpJNTHFHepc8miYwL9UpVtBUTsOe8BdYsLhT8N1x0OqabdTMQnVQ6/L7rucafhoyEt4P3m4Y30Sqnuyy/pdzhR9Ax7uWF+SUD1gZGm+erHQBSipvwNMyxvNUiW1usEHR81Xsc+z2uTWo1puTKf+n7Ag1Po0hY6Gjlp3wJpP/yGWPKS38Gf1UOKRELuf8yzQlSQ0aXCWsZsIPRZWvXXLQ0dDR607YM0X5mjoqHUHrPnCHA0dte6ANV+Yo6Gj1h2w5gtzNHTUugPWfGGOho5ad8CaL8zR/7qj363/emO+b+LTHPW9MTOu1zRdrE9C9cI0zxbrk1DfK+g8iNe0fCQhFaH6xjOPdpVfm39KWPzJGz/jt7Ov3+zzZEOI2YzQMYlSR1s4uM2mU/s5MXXxSEVkjSa6qo+mroD5ts8I2FcjznVAUjt4M09q9SncJpcu32eZBZIPl7GDrb5CaOrDQcb5TO+3RsAg0Mru5lS/YOu0P/i20U1rfwU1AAAAAElFTkSuQmCC");
-  background-size: 22px 35px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-}
-
-.countdown-button-container.unlocking::before {
-  opacity: 0;
-  transform: translate(0, -80px) scale(1, -1);
-}
-
 .countdown-button {
   outline: none;
-  margin: 10px;
-  padding: 10px;
+  margin: 8px;
+  padding: 12px 24px;
   background-color: #24a0ed;
-  background-image: linear-gradient(
-    -180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-  border: 1px solid #1394e5;
-  box-shadow: 0px 4px 0px 0px #0f76b6, 0px 0px 0px 0px rgba(255, 255, 255, 0.6),
-    0px 6px 4px 0px rgba(0, 0, 0, 0.3),
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  transform: translate(0, -4px);
-  transition: all 0.1s;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+  transform: translateY(-4px);
+  transition: all 0.2s;
+  box-shadow: 
+    0 4px 0 #0f76b6,
+    0 6px 10px rgba(0, 0, 0, 0.15),
+    0 10px 15px rgba(0, 0, 0, 0.15),
+    0 15px 20px rgba(0, 0, 0, 0.1);
 }
 
-.pressed > .countdown-button {
-  background-image: none;
-  background-color: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0px 0px 0px #d7d7d7, 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.1),
-    inset 0px 2px 0px 0px rgba(255, 255, 255, 0.2);
-  transform: translate(0, 0);
+.countdown-button:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 6px 0 #0f76b6,
+    0 8px 12px rgba(0, 0, 0, 0.15),
+    0 12px 17px rgba(0, 0, 0, 0.15),
+    0 17px 22px rgba(0, 0, 0, 0.1);
 }
 
-.locked > .countdown-button,
-.unlocked .countdown-button:active {
-  background-color: #169aec;
-  box-shadow: 0px 0px 0px 0px #0f76b6, 0px 1px 0px 0px rgba(255, 255, 255, 0.6),
-    0px 0px 3px 0px rgba(0, 0, 0, 0.3),
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.2);
-  transform: translate(0, 0);
-}
-
-.unlocked .countdown-button:hover {
-  background-image: none;
-  transform: translate(0, -3px);
-  box-shadow: 0px 3px 0px 0px #0f76b6, 0px 0px 0px 0px rgba(255, 255, 255, 0.6),
-    0px 4px 4px 0px rgba(0, 0, 0, 0.3),
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.2);
-}
-
-.countdown-button-container.unlocking .countdown-button {
-  transition-delay: 0.3s;
+.countdown-button:active,
+.countdown-button.pressed {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 2px 0 #0f76b6,
+    0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .scroll-lock {
@@ -325,4 +256,9 @@ body {
   right: -200px;
   bottom: 100px;
   transform: rotate(-75deg);
+}
+
+.grid {
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1rem, 5vw, 3rem);
 }
