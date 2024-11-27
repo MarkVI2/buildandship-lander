@@ -31,7 +31,8 @@ export default function TeamMember({
   return (
     <Flipped flipId={`member-${name}`} spring={springConfig}>
       <div className="flex flex-col group">
-        <div className="relative rounded-lg overflow-hidden shadow-lg 
+        <div
+          className="relative rounded-lg overflow-hidden shadow-lg 
           transform transition duration-300 ease-in-out
           group-hover:scale-[1.02] group-hover:shadow-xl">
           <Flipped inverseFlipId={`member-${name}`}>
@@ -42,13 +43,16 @@ export default function TeamMember({
                 width={1000}
                 height={1000}
                 className="h-full w-full object-cover"
+                onError={(e) => {
+                  console.error(`Error loading image for ${name}:`, e);
+                }}
               />
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300">
                 <div className="absolute inset-0 flex flex-col justify-center items-center p-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <h3 className="text-xl font-bold mb-2">{name}</h3>
                   <p className="text-sm font-medium mb-2">{role}</p>
                   <p className="text-sm mb-4">{bio}</p>
-                  
+
                   {/* Social Icons */}
                   <div className="flex gap-4 mt-2">
                     {linkedin && (

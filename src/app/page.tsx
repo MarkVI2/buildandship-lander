@@ -70,7 +70,7 @@ export default function Home() {
       description:
         "We hope you're ready, another project is gonna be launching soon.",
       image: "/projects/Under Dev project logo.png",
-      link: "https://muscope.vercel.app",
+      link: "https://buildandship.org/projects",
     },
     // Add more projects here
   ];
@@ -216,12 +216,11 @@ export default function Home() {
         </section>
 
         {/* Privacy Policy Button */}
-        <a 
-          href="/privacy" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 text-sm"
-        >
+        <a
+          href="/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 text-sm">
           Privacy Policy
         </a>
       </main>
