@@ -55,7 +55,7 @@ export default function CountdownButton({ onComplete }: CountdownButtonProps) {
               viewBox="0 0 150 200"
               xmlns="http://www.w3.org/2000/svg">
               <path
-                d="M75 20 L75 0 L65 15 M75 0 L85 15"
+                d="M75 00 L75 0 L65 15 M75 0 L85 15"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
