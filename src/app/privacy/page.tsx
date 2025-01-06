@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function Privacy() {
   return (
-    <div className="bg-gray-50 text-gray-900 pl-4">
+    <div className="min-h-screen">
       <div className="container">
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-blue-600 mb-4">MUCalSync Privacy Policy</h1>

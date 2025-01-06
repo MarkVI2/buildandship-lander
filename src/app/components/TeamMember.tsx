@@ -7,7 +7,7 @@ import Image from "next/image";
 interface TeamMemberProps {
   name: string;
   role: string;
-  image: string;
+  //image: string;
   bio: string;
   linkedin?: string;
   github?: string;
@@ -18,7 +18,7 @@ console.log("GitHub Icon available:", IconBrandGithub);
 export default function TeamMember({
   name,
   role,
-  image,
+  //image,
   bio,
   linkedin,
   github,
@@ -37,7 +37,7 @@ export default function TeamMember({
           group-hover:scale-[1.02] group-hover:shadow-xl">
           <Flipped inverseFlipId={`member-${name}`}>
             <div className="relative w-full aspect-w-3 aspect-h-4">
-              <Image
+              {/*<Image
                 src={image}
                 alt={name}
                 width={1000}
@@ -46,7 +46,7 @@ export default function TeamMember({
                 onError={(e) => {
                   console.error(`Error loading image for ${name}:`, e);
                 }}
-              />
+              />*/}
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300">
                 <div className="absolute inset-0 flex flex-col justify-center items-center p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <h3 className="text-lg font-bold mb-2">{name}</h3>
