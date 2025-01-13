@@ -27,6 +27,78 @@ body {
   overflow-x: hidden;
 }
 
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.slide-up {
+  animation: slideUp 0.2s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.search-badge {
+  animation: slideUp 0.2s ease-out;
+}
+
+.profile-sidebar {
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.profile-sidebar.open {
+  transform: translateX(0);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .burger-menu {
   width: 30px;
   height: 20px;
@@ -186,28 +258,20 @@ body {
   cursor: pointer;
   transform: translateY(-4px);
   transition: all 0.2s;
-  box-shadow: 
-    0 4px 0 #0f76b6,
-    0 6px 10px rgba(0, 0, 0, 0.15),
-    0 10px 15px rgba(0, 0, 0, 0.15),
-    0 15px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 0 #0f76b6, 0 6px 10px rgba(0, 0, 0, 0.15),
+    0 10px 15px rgba(0, 0, 0, 0.15), 0 15px 20px rgba(0, 0, 0, 0.1);
 }
 
 .countdown-button:hover {
   transform: translateY(-8px);
-  box-shadow: 
-    0 6px 0 #0f76b6,
-    0 8px 12px rgba(0, 0, 0, 0.15),
-    0 12px 17px rgba(0, 0, 0, 0.15),
-    0 17px 22px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 0 #0f76b6, 0 8px 12px rgba(0, 0, 0, 0.15),
+    0 12px 17px rgba(0, 0, 0, 0.15), 0 17px 22px rgba(0, 0, 0, 0.1);
 }
 
 .countdown-button:active,
 .countdown-button.pressed {
   transform: translateY(-2px);
-  box-shadow: 
-    0 2px 0 #0f76b6,
-    0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 0 #0f76b6, 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .scroll-lock {
@@ -250,7 +314,7 @@ body {
   left: -200px;
   bottom: 100px;
   transform: rotate(75deg);
-} 
+}
 
 .arrow.side-right {
   right: -200px;
