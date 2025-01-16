@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.28.1",
     "framer-motion": "^11.18.0",
+    "lucide-react": "^0.471.1",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-flip-toolkit": "^7.2.4"
+    "react-flip-toolkit": "^7.2.4",
+    "react-use": "^17.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
