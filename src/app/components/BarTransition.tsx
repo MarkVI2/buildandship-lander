@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 export default function BarTransition({ onTransitionComplete }: { onTransitionComplete: () => void }) {
-  const bars = Array.from({ length: 4 });
+  const bars = Array.from({ length: 5 });
 
   return (
     <div className="fixed inset-0 z-50 flex">
