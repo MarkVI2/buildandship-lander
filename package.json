@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next build && next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -32,8 +32,8 @@
     "type": "git",
     "url": "git+https://github.com/MarkVI2/buildandship-lander.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Trisk101",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MarkVI2/buildandship-lander/issues"
   },

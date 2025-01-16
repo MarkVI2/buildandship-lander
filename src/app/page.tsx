@@ -11,12 +11,12 @@ import { useTransition } from "./context/TransitionContext";
 
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading] = useState(true);
   const [showTransition, setShowTransition] = useState(false);
   const [showLogo, setShowLogo] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { startTransition } = useTransition();
+  const {} = useTransition();
 
   const handleProjectClick = (link: string) => {
     if (link !== "#") {

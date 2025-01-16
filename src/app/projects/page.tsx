@@ -12,7 +12,7 @@ export default function Projects() {
 
   useEffect(() => {
     endTransition();
-  }, []);
+  });
 
   const projects = [
     {

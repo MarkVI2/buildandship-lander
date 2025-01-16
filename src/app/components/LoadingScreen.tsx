@@ -24,6 +24,7 @@ export default function LoadingScreen({ onTransitionStart }: { onTransitionStart
     }, 200); // Faster letter switching
     
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onTransitionStart]);
 
   return (
