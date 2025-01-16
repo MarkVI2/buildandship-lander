@@ -128,3 +128,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+src/app/page.tsx.bak
+src/app/page2.tsx.bak
