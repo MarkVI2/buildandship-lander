@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
 
 @layer base {
   html {
@@ -15,6 +16,7 @@
   --accent: #3b82f6;
 }
 
+
 * {
   margin: 0;
   padding: 0;
@@ -24,7 +26,7 @@
 body {
   background-color: black;
   color: white;
-  font-family: var(--font-helvetica-now), Arial, sans-serif;
+  font-family: var(--font-readex), Arial, sans-serif;
   overflow-x: hidden;
 }
 
