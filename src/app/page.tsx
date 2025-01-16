@@ -362,6 +362,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <div className="fixed bottom-8 left-10 w-24 h-0.5 z-50 text-white text-xs">
+      Built by Trisk101
+      </div>
         </>
       )}
     </>
