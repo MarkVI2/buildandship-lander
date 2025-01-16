@@ -1,25 +1,15 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Frijole, Sacramento } from "next/font/google";
+import { Readex_Pro } from "next/font/google";
 import "./globals.css";
+import { TransitionProvider } from './context/TransitionContext';
 
-const helveticaNow = localFont({
-  src: "./fonts/helveticanowtext-black-demo.ttf",
-  variable: "--font-helvetica-now",
-  weight: "100 900",
-});
-
-const frijole = Frijole({
-  weight: "400",
+const readex_pro = Readex_Pro({
   subsets: ["latin"],
-  variable: "--font-frijole",
+  variable: "--font-readex",
+  display: "swap",
 });
 
-const sacramento = Sacramento({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-sacramento",
-});
+
 
 export const metadata: Metadata = {
   title: "Build & Ship",
@@ -34,8 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${helveticaNow.variable} ${frijole.variable} ${sacramento.variable} antialiased`}>
-        {children}
+        className={` ${readex_pro.variable} antialiased`}>
+        <TransitionProvider>
+          {children}
+        </TransitionProvider>
       </body>
     </html>
   );

@@ -1,32 +1,33 @@
 {
-  "name": "build-and-ship-lander",
+  "name": "lander",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next build && next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@tabler/icons-react": "^3.28.1",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
-    "framer-motion": "^11.17.0",
-    "lucide-react": "^0.471.1",
-    "next": "^15.1.4",
+    "framer-motion": "^11.18.0",
+    "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-flip-toolkit": "^7.2.4",
-    "react-use": "^17.6.0"
+    "react-flip-toolkit": "^7.2.4"
   },
   "devDependencies": {
-    "@types/node": "^22.10.5",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "eslint": "^9.18.0",
-    "eslint-config-next": "15.0.3",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3"
-  }
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "index.js",
+  "author": "Trisk101",
+  "license": "MIT"
 }

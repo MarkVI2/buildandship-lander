@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   html {
     font-size: calc(14px + 0.390625vw);
+    scroll-behavior: smooth;
   }
 }
 
@@ -14,6 +16,7 @@
   --accent: #3b82f6;
 }
 
+
 * {
   margin: 0;
   padding: 0;
@@ -21,9 +24,9 @@
 }
 
 body {
-  background-color: var(--background);
-  color: var(--text);
-  font-family: var(--font-helvetica-now), Arial, sans-serif;
+  background-color: black;
+  color: white;
+  font-family: var(--font-readex), Arial, sans-serif;
   overflow-x: hidden;
 }
 
@@ -53,6 +56,21 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes letterPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
   }
 }
 
@@ -214,6 +232,12 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .team-member {
   opacity: 0;
   transform: translateY(20px);
@@ -325,4 +349,101 @@ body {
 .grid {
   gap: clamp(1rem, 3vw, 2rem);
   padding: clamp(1rem, 5vw, 3rem);
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+  }
+}
+
+.animate-zoomOut {
+  animation: zoomOut 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.text-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  text-align: center;
+  width: 100%;
+}
+
+.main-text-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+}
+
+.subtitle-container {
+  position: fixed;
+  bottom: 8rem;
+  right: 8rem;
+  z-index: 10;
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+  }
+}
+
+.animate-zoomOut {
+  animation: zoomOut 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

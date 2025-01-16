@@ -1,0 +1,293 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import TeamMember from "./components/TeamMember";
+import ProjectCard from "./components/ProjectCard";
+import TextFlipper from "./components/TextFlipper";
+import { describe } from "node:test";
+
+export default function Home() {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const TRAIL_LENGTH = 20;
+    const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
+    const trailPositions = useRef<{ x: number; y: number }[]>([]);
+    const [isMoving, setIsMoving] = useState(false);
+    let moveTimeout: NodeJS.Timeout;
+
+    const PROJECT_TYPES = {
+        CalSync: {
+            emoji: "📅",
+            bgColor: "bg-[#fbf8ef]"
+        },
+        UNISWAP: {
+            emoji: "⇄",
+            bgColor: "bg-[#fbf8ef]"
+        },
+        UPCOMING: {
+            emoji: "🚀",
+            bgColor: "bg-[#fbf8ef]"
+        },
+        BUILT: {
+            emoji: "🛠️",
+            bgColor: "bg-[#fbf8ef]"
+        }
+    }as const;
+    
+
+    const projects = [
+        {
+            title: "CalSync",
+            description: "A web-app that helps the stuednts of Mahindra University to sync their class time table and other college events to their calendars.",
+            type: PROJECT_TYPES.CalSync,
+            link: "https://mucalsync.buildandship.org/",
+        },
+        {
+            title: "UniSwap",
+            description : "A WhatsApp group where students of the same university can buy/sell used items to/from each other.",
+            type: PROJECT_TYPES.UNISWAP,
+            link: "https://chat.whatsapp.com/L62D2jo5T27AMDfbzGEA5X",
+        },
+        {
+            title : "New Project!!",
+            description : "New project launching soon.",
+            type : PROJECT_TYPES.UPCOMING,
+            link : "/upcoming"
+        },
+        {
+            title : "More Projects",
+            description : "Check out our other projects here.",
+            type : PROJECT_TYPES.BUILT,
+            link : "/projects"
+        }
+        //Addition of more projects here
+    ];
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [showContactInfo, setShowContactInfo] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                    }
+                });
+            },
+            {threshold: 0.3}
+        );
+
+        document.querySelectorAll(".section").forEach((section) => {
+            observer.observe(section);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (moveTimeout) clearTimeout(moveTimeout);
+            
+            setIsMoving(true);
+            
+            requestAnimationFrame(() => {
+                setCursorPosition({ x: e.clientX, y: e.clientY });
+                trailPositions.current = [
+                    { x: e.clientX, y: e.clientY },
+                    ...trailPositions.current.slice(0, TRAIL_LENGTH - 1)
+                ];
+            });
+
+            moveTimeout = setTimeout(() => {
+                setIsMoving(false);
+            }, 100);
+        };
+
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (moveTimeout) clearTimeout(moveTimeout);
+        };
+    }, []);
+
+    return (
+        <div className="min-h-screen">
+            {/* SVG filter for gooey effect */}
+            <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+                <defs>
+                    <filter id="gooey">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+                        <feColorMatrix
+                            in="blur"
+                            mode="matrix"
+                            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -7"
+                            result="gooey"
+                        />
+                    </filter>
+                </defs>
+            </svg>
+
+            <div className="cursor-gooey">
+                <div
+                    className="custom-cursor"
+                    style={{
+                        left: cursorPosition.x + 'px',
+                        top: cursorPosition.y + 'px',
+                        transform: 'translate(-50%, -50%)'
+                    }}
+                />
+                {Array.from({ length: TRAIL_LENGTH }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="cursor-trail"
+                        style={{
+                            left: (trailPositions.current[index]?.x ?? -100) + 'px',
+                            top: (trailPositions.current[index]?.y ?? -100) + 'px',
+                            transform: 'translate(-50%, -50%)',
+                            opacity: isMoving ? Math.max(0.1, 1 - (index / TRAIL_LENGTH)) : 0,
+                            transition: 'opacity 0.3s ease'
+                        }}
+                    />
+                ))}
+            </div>
+
+            <Link href="/">
+          <h1 className="text-2xl font-bold">Build & Ship</h1>
+        </Link>
+
+        <div
+          className={`burger-menu ${isMenuOpen ? "open" : ""} fixed top-4 right-6`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      
+
+            {/* Full Screen Menu */}
+            <div className={`full-menu ${isMenuOpen ? "open" : ""}`}>
+                <div className="h-full flex flex-col justify-center items-start space-y-12">
+                
+            <div className="fixed top-0 left-0 w-full z-[60] px-3 py-4 flex justify-start items-start">
+                <h1 className="menu-title">Build&Ship</h1>
+            
+            </div>
+                <Link
+                    href="#about"
+                    className="menu-item"
+                    onClick={() => setIsMenuOpen(false)}
+                >
+                    About Us
+                </Link>
+                <Link
+                    href="/privacy"
+                    className="menu-item"
+                    onClick={() => setIsMenuOpen(false)}
+                >
+                    Privacy Policy
+                </Link>
+                <div className="space-y-4">
+                    <Link
+                        href="#contact"
+                        className="menu-item"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setShowContactInfo(!showContactInfo);
+                        }}
+                    >
+                        Contact Us {showContactInfo ? '−' : '+'}
+                    </Link>
+                    <div 
+                        className={`flex flex-col gap-2 pl-4 transition-all duration-300 ${
+                            showContactInfo ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'
+                        }`}
+                    >
+                        <Link
+                            href="mailto:mark.atharva@gmail.com"
+                            className="menu-item text-lg opacity-70 hover:opacity-100"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            mark.atharva@gmail.com
+                        </Link>
+                        <span className="menu-item text-lg opacity-70">
+                            Phone: +91 8626055710
+                        </span>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            {/*Main Content */}
+            <main>
+                {/* Hero Section */}
+                <section className="h-screen flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                            We <TextFlipper 
+                                words={["Build 🛠️", "Ship 🚀"]} />
+                            <br />
+                        </h1>
+                        <p className="text-base md:text-xl text-gray-600">
+                            Turning ideas into reality, one project at a time.
+                        </p>
+                        <br />
+                        <Link
+                            href="/projects"
+                            className="inline-block bg-[#252525]  text-[#fbf8ef] px-6 py-3 rounded-lg text-lg font-semibold hover:opacity-90 transition-opacity"
+                            >
+                                Our Projects!
+                            </Link>
+                    </div>
+                </section>
+
+                {/* Projects Section */}
+                <section
+                id="projects"
+                className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20">
+                    <div ref={sectionRef} className="max-w-7xl mx-auto">
+                        <div className="text-center mb-20">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-8">
+                                Things we have &quot;launched&quot;
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-8xl mx-auto">
+                                {projects.map((project) => (
+                                    <ProjectCard
+                                    key={project.title}
+                                    title={project.title}
+                                    description={project.description}
+                                    emoji={project.type.emoji}
+                                    bgColor={project.type.bgColor}
+                                    link={project.link}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                {/* About Section */}
+                <section
+                id="about"
+                className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20">
+                    <div className="max-w-7xl mx-auto">
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
+                  About Us
+                </h2>
+                    <p className="text-lg md:text-xl text-gray-600 mb-16 max-w-4xl mx-auto">
+                    Behind the scenes, are people who are passionate
+                    builders and creators who believe in shipping products that
+                    matter.
+                    <br />
+                    Simply put we just love to{" "}
+                    <span className="text-black">Build it </span>and{" "}
+                    <span className="text-black">Ship it!</span>
+                    </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    )
+}

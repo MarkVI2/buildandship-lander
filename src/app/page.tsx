@@ -1,226 +1,307 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import TeamMember from "./components/TeamMember";
-import ProjectCard from "./components/ProjectCard";
-import CountdownButton from "./components/CountdownButton";
+import LoadingScreen from "./components/LoadingScreen";
+import BarTransition from "./components/BarTransition";
+import ZoomTransition from "./components/ZoomTransition";
+import CircularText from "./components/CircularText";
+import { useTransition } from "./context/TransitionContext";
+
 
 export default function Home() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isLoading] = useState(true);
+  const [showTransition, setShowTransition] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const {} = useTransition();
 
-  const teamMembers = [
-    {
-      name: "Vedanth Nath",
-      role: "Shipper",
-      image: "/team/Ved.jpg",
-      bio: "BA undergrad with a passion for entrepreneurship.",
-      linkedin: "https://www.linkedin.com/in/vedanthnath/",
-    },
-    {
-      name: "Ashish Ahuja",
-      role: "Shipper",
-      image: "/team/Ashish.jpg",
-      bio: "BA undergrad with a passion for entrepreneurship.",
-      linkedin: "https://www.linkedin.com/in/ashish-ahuja-548368274/",
-    },
-    {
-      name: "Akshith Bathena",
-      role: "Shipper",
-      image: "/team/Akshith.jpg",
-      bio: "BA undergrad with a passion for entrepreneurship.",
-      linkedin: "https://www.linkedin.com/in/akshith-bathena/",
-    },
-    {
-      name: "Atharv Garg",
-      role: "Builder",
-      image: "/team/Atharv.jpg",
-      bio: "Engineering undergrad with a passion for computer related stuff.",
-      linkedin: "https://www.linkedin.com/in/atharv-garg/",
-      github: "https://github.com/MarkVI2",
-    },
-    {
-      name: "Parv Dubey",
-      role: "Builder",
-      image: "/team/Parv.jpg",
-      bio: "Engineering undergrad with a passion for computer related stuff.",
-      linkedin: "https://www.linkedin.com/in/parv-dubey-10b45b317/",
-      github: "https://github.com/Trisk101",
-    },
+  const handleProjectClick = (link: string) => {
+    if (link !== "#") {
+      window.open(link, '_blank', 'noopener,noreferrer');
+    }
+  };
 
-    // Add more team members here
-  ];
   const projects = [
     {
-      title: "MUCalSync",
-      description:
-        "An app that helps the students of Mahindra University to sync their class time table and other college events to their google calendar.",
-      image: "/projects/logo.png",
-      link: "https://mucalsync.buildandship.org/",
+      title: "🛠️ MUCalSync",
+      description: "An app that helps the students of Mahindra University to sync their class time table and other college events to their google calendar.",
+      link: "https://mucalsync.vercel.app",
     },
     {
-      title: "UniSwap",
-      description:
-        "An online Whatsapp Groupchat where students of Mahindra University can buy/sell items from/to other students of Mahindra University.",
-      image: "/projects/UniSwap.jpg",
+      title: "⇄ UniSwap",
+      description: "An online Whatsapp Groupchat where students of Mahindra University can buy/sell items from/to other students of Mahindra University.",
       link: "https://chat.whatsapp.com/L62D2jo5T27AMDfbzGEA5X",
     },
     {
-      title: "New Project!!",
-      description:
-        "We hope you're ready, another project is gonna be launching soon.",
-      image: "/projects/Under Dev project logo.png",
-      link: "https://buildandship.org/projects",
+      title: "🚀 Incoming Project",
+      description: "We are working on a new project that will be revealed soon.",
+      link: "#",
     },
-    // Add more projects here
   ];
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrollingAllowed, setIsScrollingAllowed] = useState(false);
-  //const [showPrivacy, setShowPrivacy] = useState(false);
+  const slideAnimation = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
+  };
+
+  const aboutText = "We are a collective of college friends turned entrepreneurs, driven by our passion for innovation and technology. Based in Hyderabad, we're on a mission to build and ship products that make a difference.";
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
+    const timer = setInterval(() => {
+      if (!isPaused) {
+        setCurrentIndex((prev) => (prev + 1) % projects.length);
+      }
+    }, 3000);
 
-    document.querySelectorAll(".section").forEach((section) => {
-      observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+    return () => clearInterval(timer);
+  }, [isPaused, projects.length]);
 
   return (
-    <div className={`min-h-screen ${!isScrollingAllowed ? "scroll-lock" : ""}`}>
-      {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-[60] px-6 py-4 flex justify-between items-center bg-white bg-opacity-80">
-        <Link href="/">
-          <h1 className="text-2xl font-bold">Build & Ship</h1>
-        </Link>
+    <>
+      {isLoading && <LoadingScreen onTransitionStart={() => setShowTransition(true)} />}
+      {showTransition && (
+        <BarTransition onTransitionComplete={() => setShowLogo(true)} />
+      )}
+      {showLogo && (
+        <>
+          <motion.img
+            src="/logo.jpg"
+            alt="Logo"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="fixed top-6 left-6 w-12 z-50"
+          />
+          <nav className="fixed top-6 right-6 z-50">
+            <motion.div
+              className="flex gap-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Link 
+                href="/projects" 
+                className="text-white/80 hover:text-white transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const text = document.querySelector('.text-container');
+                  if (text) {
+                    text.classList.add('animate-zoomOut');
+                    setTimeout(() => {
+                      window.location.href = '/projects';
+                    }, 1200);
+                  }
+                }}
+              >
+                Projects
+              </Link>
+              <Link href="/about" className="text-white/80 hover:text-white transition-colors">
+                About
+              </Link>
+              <Link 
+                href="#contact" 
+                className="text-white/80 hover:text-white transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const contactSection = document.querySelector('#contact');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ 
+                      behavior: 'smooth',
+                      block: 'start'
+                    });
+                  }
+                }}
+              >
+                Contact
+              </Link>
+            </motion.div>
+          </nav>
+          <ZoomTransition aboutText={aboutText} />
+          <CircularText />
 
-        <div
-          className={`burger-menu ${isMenuOpen ? "open" : ""}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </header>
+          <div className="min-h-screen bg-black relative z-10 mt-[65vh]">
+            <div className="max-w-6xl mx-auto px-6 py-24">
+              <h2 className="text-6xl font-bold text-white mb-16 text-center">Recent Work</h2>
+              
+              <div className="relative w-full max-w-md mx-auto h-[180px]">
+                <div 
+                  className="relative w-full h-full"
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                >
+                  {projects.map((project, index) => (
+                    <motion.div
+                      key={project.title}
+                      className={`
+                        absolute top-0 left-0 w-full
+                        ${currentIndex === index ? 'block' : 'hidden'}
+                      `}
+                      initial="initial"
+                      animate={currentIndex === index ? "animate" : "exit"}
+                      variants={slideAnimation}
+                      transition={{ duration: 0.5 }}
+                      onClick={() => handleProjectClick(project.link)}
+                    >
+                      <div className="bg-white/10 rounded-xl p-5 hover:bg-white/15 transition-all duration-300">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                            <p className="text-white/60 text-sm leading-relaxed line-clamp-2">
+                              {project.description}
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0 ml-4">
+                            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                              <svg 
+                                className="w-5 h-5 text-white" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                              >
+                                <path 
+                                  strokeLinecap="round" 
+                                  strokeLinejoin="round" 
+                                  strokeWidth={2} 
+                                  d="M14 5l7 7m0 0l-7 7m7-7H3" 
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
 
-      {/* Full Screen Menu */}
-      <div className={`full-menu ${isMenuOpen ? "open" : ""}`}>
-        <div className="h-full flex flex-col justify-center items-center space-y-12">
-          <Link
-            href="#about"
-            className="menu-item"
-            onClick={() => setIsMenuOpen(false)}>
-            About Us
-          </Link>
-          <Link
-            href="/projects"
-            className="menu-item"
-            onClick={() => setIsMenuOpen(false)}>
-            Our Projects
-          </Link>
-          <Link
-            href="/privacy"
-            className="menu-item"
-            onClick={() => setIsMenuOpen(false)}>
-            Privacy Policy
-          </Link>
-        </div>
-      </div>
+              <motion.p 
+                className="text-white/60 text-center mt-12 text-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                Click on Projects to view them all
+              </motion.p>
+            </div>
 
-      {/* Main Content */}
-      <main>
-        {/* Hero Section */}
-        <section className="h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              We <span className="frijole-regular">Build</span> 🛠️
-              <br />
-              We <span className="font-sacramento">Ship</span> 🚀
-            </h1>
-            <p className="text-base md:text-xl text-gray-600">
-              Turning ideas into reality, one project at a time.
-            </p>
-            <br />
-            <CountdownButton onComplete={() => setIsScrollingAllowed(true)} />
+            {/* New Pop-up Events Section */}
+          <div className="max-w-6xl mx-auto px-6 py-24 border-t border-white/10 bg-black/90">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center gap-8"
+            >
+              <h2 className="text-5xl font-bold text-white mb-8 text-center">Meet Us In Person</h2>
+              
+              <div className="bg-white/5 rounded-2xl p-8 max-w-3xl w-full backdrop-blur">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-white mb-4">Weekend Pop-up Events</h3>
+                    <p className="text-white/80 text-lg mb-6">
+                      Join us every weekend in Hyderabad for casual meetups where we discuss tech, startups, and innovation. Whether you &lsquo re a fellow entrepreneur, student, or just curious about what we do - you &lsquo re welcome!
+                    </p>
+                    <div className="space-y-3 text-white/70">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>Every Weekend</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span> TBA </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>TBA</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col gap-4">
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </section>
-
-        {/* Projects Section */}
-        <section
-          id="projects"
-          className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20">
-          <div ref={sectionRef} className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-4xl font-bold mb-8">
-                Things we have &quot;launched&quot;
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project) => (
-                  <ProjectCard
-                    key={project.title}
-                    title={project.title}
-                    description={project.description}
-                    image={project.image}
-                    link={project.link}
-                  />
-                ))}
+            
+            {/* Meet Up/Contact Section */}
+            <div id = "contact"className="max-w-6xl mx-auto px-6 py-24 border-t border-white/10 bg-[#8BA5FF]">
+              <h2 className="text-5xl font-bold text-white mb-16 text-center">INTERESTED IN WORKING TOGETHER?</h2>
+              
+              <div className="flex flex-col items-center gap-8 text-center">
+                <p className="text-white/80 text-xl max-w-2xl">
+                  Want to discuss your next project or interested in working with us? We &lsquo re always open to meeting new people and exploring exciting opportunities.
+                </p>
+                
+                {/* Added Contact Information */}
+                <div className="flex flex-col gap-4 mt-8">
+                  <a 
+                    href="mailto:ag@buildandship.org" 
+                    className="text-white text-xl hover:text-white/80 transition-colors flex items-center gap-2 cursor-pointer group"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = "mailto:ag@buildandship.org";
+                    }}
+                  >
+                    <svg 
+                      className="w-6 h-6 group-hover:text-white/80" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
+                      />
+                    </svg>
+                    <span className="border-b border-transparent hover:border-white transition-colors">
+                    ag@buildandship.org
+                    </span>
+                  </a>
+                  <a 
+                    href="tel:+91 96190 27671" 
+                    className="text-white text-xl hover:text-white/80 transition-colors flex items-center gap-2 cursor-pointer group"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = "tel:+91 96190 27671";
+                    }}
+                  >
+                    <svg 
+                      className="w-6 h-6 group-hover:text-white/80" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" 
+                      />
+                    </svg>
+                    <span className="border-b border-transparent hover:border-white transition-colors">
+                    +91 96190 27671
+                    </span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </section>
-
-        {/* About Section */}
-        <section
-          id="about"
-          className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <div className="flex items-center justify-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-bold">
-                  Who pressed the button?
-                </h2>
-              </div>
-              <p className="text-lg md:text-xl text-gray-600 mb-16 max-w-4xl mx-auto">
-                Literally <span className="text-black underline">you</span> did.
-                <br />
-                <br />
-                But... <br />
-                &quot;Behind the scenes&quot; are people who are passionate
-                builders and creators who believe in shipping products that
-                matter. <br />
-                Simply put we just love to{" "}
-                <span className="text-black">Build it </span>and{" "}
-                <span className="text-black">Ship it!</span>
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {teamMembers.map((member) => (
-                  <TeamMember
-                    key={member.name}
-                    name={member.name}
-                    role={member.role}
-                    image={member.image}
-                    bio={member.bio}
-                    linkedin={member.linkedin}
-                    github={member.github}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+        </>
+      )}
+    </>
   );
 }
