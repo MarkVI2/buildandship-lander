@@ -251,7 +251,7 @@ export default function Home() {
                     className="text-white text-xl hover:text-white/80 transition-colors flex items-center gap-2 cursor-pointer group"
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.href = "mailto:ag@buildandship.org";
+                      window.location.href = "mailto:admin@buildandship.org";
                     }}
                   >
                     <svg 
@@ -268,7 +268,7 @@ export default function Home() {
                       />
                     </svg>
                     <span className="border-b border-transparent hover:border-white transition-colors">
-                    ag@buildandship.org
+                    admin@buildandship.org
                     </span>
                   </a>
                   <a 
