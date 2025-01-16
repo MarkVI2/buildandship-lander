@@ -22,13 +22,23 @@ export default function ZoomTransition({ aboutText }: ZoomTransitionProps) {
   const scale = useTransform(
     scrollYProgress,
     [0, 0.5],
-    [1, isMobile ? 0.5 : 0.2] // Adjust zoom level for mobile
+    [1, isMobile ? 2.5 : 4] // Increase these values to zoom in instead of out
   );
 
   // Earlier fade out for initial content
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "0%"]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 0.5],
+    ["0%", "-10%"] // Add slight upward movement for depth
+  );
+
+  const z = useTransform(
+    scrollYProgress,
+    [0, 0.5],
+    [0, 100] // Add z-axis transform
+  );
 
   // Earlier fade in for about text
   const aboutTextOpacity = useTransform(
@@ -39,9 +49,23 @@ export default function ZoomTransition({ aboutText }: ZoomTransitionProps) {
 
   return (
     <>
-      <div ref={containerRef} className="h-[100vh] w-full">
+      <div
+        ref={containerRef}
+        className="h-[300vh] w-full" // Change from 100vh to 200vh to allow scrolling
+      >
         <div className="sticky top-0 h-screen w-full overflow-hidden">
-          <motion.div style={{ scale, opacity, y }} className="h-full w-full">
+          <motion.div
+            className="h-full w-full flex items-center justify-center"
+            style={{
+              scale: scale,
+              opacity: opacity,
+              y: y,
+              z: z,
+              transformStyle: "preserve-3d",
+              perspective: "1000px",
+              transformOrigin: "center center",
+            }}
+          >
             <GrowingText />
           </motion.div>
         </div>
