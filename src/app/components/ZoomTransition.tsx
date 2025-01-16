@@ -25,14 +25,16 @@ export default function ZoomTransition({ aboutText }: ZoomTransitionProps) {
     [1, isMobile ? 0.5 : 0.2] // Adjust zoom level for mobile
   );
 
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  // Earlier fade out for initial content
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "0%"]);
 
+  // Earlier fade in for about text
   const aboutTextOpacity = useTransform(
     scrollYProgress,
-    [0.6, 0.7, 0.8, 0.9],
-    [0, 1, 1, 0]
+    [0.3, 0.4, 0.8, 0.9], // Adjusted thresholds
+    [0, 1, 1, 0] // Fade in/out values
   );
 
   return (
