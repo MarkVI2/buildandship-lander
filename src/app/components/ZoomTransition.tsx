@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import GrowingText from "./GrowingText";
+import { useIsMobile } from "../../utils/useIsMobile";
 
 interface ZoomTransitionProps {
   aboutText: string;
@@ -10,28 +11,24 @@ interface ZoomTransitionProps {
 
 export default function ZoomTransition({ aboutText }: ZoomTransitionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end start"],
   });
 
+  const isMobile = useIsMobile();
+
   const scale = useTransform(
-    scrollYProgress, 
-    [0, 0.5, 1], 
-    [1, 2.5, 5]
+    scrollYProgress,
+    [0, 0.5],
+    [1, isMobile ? 0.5 : 0.2] // Adjust zoom level for mobile
   );
-  
-  const opacity = useTransform(scrollYProgress, 
-    [0, 0.4], 
-    [1, 0]
-  );
-  
-  const y = useTransform(scrollYProgress, 
-    [0, 1], 
-    ["0%", "0%"]
-  );
-  
+
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "0%"]);
+
   const aboutTextOpacity = useTransform(
     scrollYProgress,
     [0.6, 0.7, 0.8, 0.9],
@@ -40,20 +37,42 @@ export default function ZoomTransition({ aboutText }: ZoomTransitionProps) {
 
   return (
     <>
-      <div ref={containerRef} className="h-[100vh]">
-        <div className="sticky top-0 h-screen overflow-hidden">
-          <motion.div 
-            style={{ scale, opacity, y }} 
-            className="h-full"
-          >
+      <div ref={containerRef} className="h-[100vh] w-full">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          <motion.div style={{ scale, opacity, y }} className="h-full w-full">
             <GrowingText />
           </motion.div>
         </div>
         <motion.div
           style={{ opacity: aboutTextOpacity }}
-          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center max-w-2xl px-4 z-20"
+          className="
+            fixed 
+            top-1/2 
+            left-1/2 
+            transform 
+            -translate-x-1/2 
+            -translate-y-1/2 
+            text-center 
+            w-full
+            max-w-[90vw]
+            sm:max-w-xl
+            md:max-w-2xl
+            px-4 
+            sm:px-6 
+            z-20
+          "
         >
-          <p className="text-white/80 text-xl leading-relaxed">
+          <p
+            className="
+            text-white/80 
+            text-base 
+            sm:text-lg 
+            md:text-xl 
+            leading-relaxed
+            sm:leading-relaxed
+            md:leading-relaxed
+          "
+          >
             {aboutText}
           </p>
         </motion.div>
