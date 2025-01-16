@@ -203,7 +203,7 @@ export default function Home() {
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-white mb-4">Weekend Pop-up Events</h3>
                     <p className="text-white/80 text-lg mb-6">
-                      Join us every weekend in Hyderabad for casual meetups where we discuss tech, startups, and innovation. Whether you &lsquo re a fellow entrepreneur, student, or just curious about what we do - you &lsquo re welcome!
+                      Join us every weekend in Hyderabad for casual meetups where we discuss tech, startups, and innovation. Whether you &lsquo; re a fellow entrepreneur, student, or just curious about what we do - you &lsquo; re welcome!
                     </p>
                     <div className="space-y-3 text-white/70">
                       <div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ export default function Home() {
               
               <div className="flex flex-col items-center gap-8 text-center">
                 <p className="text-white/80 text-xl max-w-2xl">
-                  Want to discuss your next project or interested in working with us? We &lsquo re always open to meeting new people and exploring exciting opportunities.
+                  Want to discuss your next project or interested in working with us? We &lsquo; re always open to meeting new people and exploring exciting opportunities.
                 </p>
                 
                 {/* Added Contact Information */}
