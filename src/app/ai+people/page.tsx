@@ -1,24 +1,23 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   IconSearch,
   IconMessage2,
   IconChevronUp,
   IconUser,
-  IconBuilding,
   IconX,
   IconBrandGithub,
   IconUserPlus,
 } from "@tabler/icons-react";
 import { ExternalLink } from "lucide-react";
-import dynamic from "next/dynamic";
+import { ProfileCard } from "../components/sageComponents/ProfileCard";
+import { ProfileCarousel } from "../components/sageComponents/ProfileCarousel";
 
-const InfiniteCarousel = dynamic(
-  () => import("../components/InfiniteCarousel"),
-  {
-    ssr: false,
-  }
-);
+// Add AIMessage type
+type AIMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
 
 // Data
 const profiles: Profile[] = [
@@ -56,6 +55,13 @@ const profiles: Profile[] = [
       twitter: "https://twitter.com/sarahchen_ai",
       linkedin: "https://linkedin.com/in/sarahchen",
     },
+    collaborationPotential: 90,
+    commonInterests: [
+      "Machine Learning",
+      "Model Optimization",
+      "AI Research",
+      "MLOps",
+    ],
   },
   {
     id: 2,
@@ -90,6 +96,13 @@ const profiles: Profile[] = [
       github: "https://github.com/alexr",
       twitter: "https://twitter.com/alex_web3",
     },
+    collaborationPotential: 90,
+    commonInterests: [
+      "Machine Learning",
+      "Model Optimization",
+      "AI Research",
+      "MLOps",
+    ],
   },
   {
     id: 3,
@@ -123,6 +136,13 @@ const profiles: Profile[] = [
       github: "https://github.com/priyapatels",
       portfolio: "https://priya.dev",
     },
+    collaborationPotential: 90,
+    commonInterests: [
+      "Machine Learning",
+      "Model Optimization",
+      "AI Research",
+      "MLOps",
+    ],
   },
   {
     id: 4,
@@ -156,6 +176,13 @@ const profiles: Profile[] = [
       portfolio: "https://davidkim.design",
       twitter: "https://twitter.com/davidkdesign",
     },
+    collaborationPotential: 90,
+    commonInterests: [
+      "Machine Learning",
+      "Model Optimization",
+      "AI Research",
+      "MLOps",
+    ],
   },
   {
     id: 5,
@@ -174,6 +201,13 @@ const profiles: Profile[] = [
     ],
     tldr: "",
     pastVentures: [],
+    collaborationPotential: 90,
+    commonInterests: [
+      "Machine Learning",
+      "Model Optimization",
+      "AI Research",
+      "MLOps",
+    ],
   },
   {
     id: 6,
@@ -192,6 +226,13 @@ const profiles: Profile[] = [
     ],
     tldr: "",
     pastVentures: [],
+    collaborationPotential: 90,
+    commonInterests: [
+      "Machine Learning",
+      "Model Optimization",
+      "AI Research",
+      "MLOps",
+    ],
   },
 ];
 
@@ -201,50 +242,17 @@ const currentUser = {
   avatar: null, // In case we don't have an avatar image
 };
 
-const ProfileCard: React.FC<{ profile: Profile; onClick: () => void }> = ({
-  profile,
-  onClick,
-}) => (
-  <div
-    onClick={onClick}
-    className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-  >
-    <div className="h-24 rounded-t-xl bg-gradient-to-r from-blue-500 to-purple-600" />
-    <div className="p-4">
-      <h3 className="font-semibold text-lg">{profile.name}</h3>
-      <p className="text-gray-600 text-sm">{profile.role}</p>
-      <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
-        <IconBuilding size={16} />
-        <span>{profile.company}</span>
-      </div>
-      <div className="mt-4 flex flex-wrap gap-1">
-        {profile.tags.slice(0, 3).map((tag) => (
-          <span
-            key={tag}
-            className="text-xs px-2 py-1 bg-gray-100 rounded-full"
-          >
-            {tag}
-          </span>
-        ))}
-        {profile.tags.length > 3 && (
-          <span className="text-xs px-2 py-1 bg-gray-100 rounded-full">
-            +{profile.tags.length - 3}
-          </span>
-        )}
-      </div>
-    </div>
-  </div>
-);
 const ProfileSidebar: React.FC<{
   profile: Profile;
   onClose: () => void;
   isOpen: boolean;
-}> = ({ profile, onClose, isOpen }) => (
+  children?: React.ReactNode;
+}> = ({ profile, onClose, isOpen, children }) => (
   <div
-    className={`fixed right-0 top-0 w-96 h-full bg-white shadow-2xl overflow-y-auto
-      transition-all duration-300 ease-in-out ${
-        isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-      }`}
+    className={`fixed right-0 top-0 w-96 h-full bg-background shadow-2xl overflow-y-auto
+    transition-all duration-300 ease-in-out ${
+      isOpen ? "translate-x-0" : "translate-x-full"
+    }`}
   >
     <div className="h-40 relative bg-gradient-to-r from-blue-500 to-purple-600">
       <button
@@ -267,9 +275,9 @@ const ProfileSidebar: React.FC<{
 
       {/* Name and Role */}
       <div>
-        <h2 className="text-2xl font-bold">{profile.name}</h2>
-        <p className="text-gray-600">{profile.role}</p>
-        <p className="text-gray-500 mt-1">{profile.location}</p>
+        <h2 className="text-2xl font-bold text-pink-600">{profile.name}</h2>
+        <p className="text-indigo-600">{profile.role}</p>
+        <p className="text-blue-500 mt-1">{profile.location}</p>
       </div>
 
       {/* TLDR Section */}
@@ -369,9 +377,25 @@ const ProfileSidebar: React.FC<{
           ))}
         </div>
       </div>
+
+      <div className="px-6 py-4 space-y-4">
+        <h3 className="text-sm uppercase text-gray-500 font-medium">
+          AI Assistant
+        </h3>
+        {children}
+      </div>
     </div>
   </div>
 );
+
+function getRandomProfile(
+  profiles: Profile[],
+  excludeIds: number[] = []
+): Profile {
+  const availableProfiles = profiles.filter((p) => !excludeIds.includes(p.id));
+  const randomIndex = Math.floor(Math.random() * availableProfiles.length);
+  return availableProfiles[randomIndex];
+}
 
 export default function AIPeoplePage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -379,6 +403,82 @@ export default function AIPeoplePage() {
   const [inputValue, setInputValue] = useState("");
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [showIcebreakers, setShowIcebreakers] = useState(false);
+
+  // New AI-related state
+  const [aiMessages, setAiMessages] = useState<AIMessage[]>([]);
+  const [activeIcebreakers, setActiveIcebreakers] = useState([
+    "Tell me about your recent projects",
+    "What's your tech stack?",
+    "Looking for collaborators?",
+    "Open to mentoring?",
+  ]);
+
+  const [connectionSuggestions, setConnectionSuggestions] = useState<Profile[]>(
+    []
+  );
+
+  // Add state for active tab
+  const [activeTab, setActiveTab] = useState<"discover" | "messages">(
+    "messages"
+  );
+  const questionPrompts = [
+    "Preferred way to collaborate?",
+    "Tech stack of choice?",
+    "Biggest project challenge?",
+    "Dream project?",
+    "Work style?",
+    "Learning goals?",
+  ];
+
+  const statementPrompts = [
+    "Show me builders who...",
+    "Connect me with people who...",
+    "Find teammates that...",
+    "Looking for developers who...",
+    "Match me with founders who...",
+  ];
+
+  // Modified handleSend with AI integration
+  const handleAIAction = (icebreaker: string) => {
+    // Add message directly instead of triggering handleSend
+    setAiMessages((prev) => [...prev, { role: "user", content: icebreaker }]);
+
+    // Clear input after sending
+    setInputValue("");
+
+    // Simulate AI response
+    setTimeout(() => {
+      setAiMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: `I'll help you with: ${icebreaker}` },
+      ]);
+    }, 500);
+  };
+
+  const [hasMessages, setHasMessages] = useState(false);
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+
+    // Add user message
+    setAiMessages((prev) => [...prev, { role: "user", content: inputValue }]);
+    setHasMessages(true); // Set this to true when first message is sent
+
+    // Clear input
+    setInputValue("");
+
+    // Add AI response after short delay
+    setTimeout(() => {
+      setAiMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `Processing your message: ${inputValue}`,
+        },
+      ]);
+    }, 500);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -397,117 +497,161 @@ export default function AIPeoplePage() {
   };
 
   const handleSearch = () => {
-    // Implement search logic here
+    handleAIAction(`Search profiles: ${searchQuery}`);
   };
 
-  const handleSend = () => {
-    // Implement send logic here
-  };
+  const [filteredProfiles, setFilteredProfiles] = useState(profiles);
 
-  // Filter profiles based on search
-  const filteredProfiles = profiles.filter(
-    (profile) =>
-      profile.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      profile.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      profile.tldr.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      profile.currentWork.some((work) =>
-        work.project.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      profile.pastVentures.some(
-        (venture) =>
-          venture.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          venture.description.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-  );
+  // Update filtered profiles when search query changes
+  useEffect(() => {
+    const filtered = profiles.filter(
+      (profile) =>
+        profile.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        profile.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        profile.tldr.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        profile.currentWork.some((work) =>
+          work.project.toLowerCase().includes(searchQuery.toLowerCase())
+        ) ||
+        profile.pastVentures.some(
+          (venture) =>
+            venture.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            venture.description
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+        )
+    );
+    setFilteredProfiles(filtered);
+  }, [searchQuery]);
 
-  const handleProfileClick = (profile: Profile) => {
-    if (isSearchMode) {
-      setSelectedProfile(profile);
-    }
+  const [randomProfile, setRandomProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    // Set initial random profile
+    setRandomProfile(getRandomProfile(profiles));
+
+    // Change random profile every 30 seconds
+    const interval = setInterval(() => {
+      setRandomProfile(getRandomProfile(profiles, [randomProfile?.id || 0]));
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+  const handlePromptSelection = (prompt: string) => {
+    setInputValue(prompt); // Update the input value instead of sending message
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="fixed left-0 top-0 w-64 h-full p-8 border-r border-gray-100 bg-white/80 backdrop-blur-sm z-50 flex flex-col">
-        {/* Top section */}
-        <div className="flex-1">
-          <div className="mb-16">
-            <h1 className="text-2xl font-bold mb-2 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              AI +
-            </h1>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              People
-            </h1>
+    <div className="min-h-screen bg-background">
+      {/* Left Sidebar */}
+      <div className="fixed inset-y-0 hidden w-[256px] border-r border-dashed bg-card py-6 pl-6 transition-all md:block">
+        <div className="relative flex h-full flex-col gap-2">
+          <a className="pl-2" href="/">
+            <div className="flex w-full items-center">
+              {/* Logo SVG */}
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 142 120"
+                fill="none"
+                className="text-indigo-600"
+              >
+                <path d="M56.7217..." fill="currentColor" />
+              </svg>
+            </div>
+          </a>
+
+          <div className="flex-1">
+            <div className="mb-16">
+              <h1 className="text-base font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                AI +
+              </h1>
+              <h1 className="text-base font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                People
+              </h1>
+            </div>
+
+            <div className="space-y-4 text-gray-600">
+              <div
+                className={`flex items-center space-x-2 cursor-pointer transition-colors ${
+                  activeTab === "messages"
+                    ? "text-indigo-600"
+                    : "hover:text-indigo-600"
+                }`}
+                onClick={() => setActiveTab("messages")}
+              >
+                <IconMessage2 size={20} />
+                <span>messages</span>
+              </div>
+              <div
+                className={`flex items-center space-x-2 cursor-pointer transition-colors ${
+                  activeTab === "discover"
+                    ? "text-indigo-600"
+                    : "hover:text-indigo-600"
+                }`}
+                onClick={() => setActiveTab("discover")}
+              >
+                <IconSearch size={20} />
+                <span>discover talent</span>
+              </div>
+              <div className="cursor-pointer hover:text-indigo-600 transition-colors">
+                search
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-4 text-gray-600">
-            <div className="flex items-center space-x-2 cursor-pointer hover:text-indigo-600 transition-colors">
-              <IconSearch size={20} />
-              <span>discover talent</span>
-            </div>
-            <div className="flex items-center space-x-2 cursor-pointer hover:text-indigo-600 transition-colors">
-              <IconMessage2 size={20} />
-              <span>messages</span>
-            </div>
-            <div className="cursor-pointer hover:text-indigo-600 transition-colors">
-              search
-            </div>
-          </div>
-        </div>
+          {/* Bottom section - Profile */}
+          <div className="border-t border-gray-100">
+            <div className="group relative py-4 px-2">
+              <div className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
+                  {currentUser.avatar ? (
+                    <img
+                      src={currentUser.avatar}
+                      alt="Profile"
+                      className="w-full h-full rounded-xl object-cover"
+                    />
+                  ) : (
+                    <IconUser size={20} className="text-indigo-600" />
+                  )}
+                </div>
 
-        {/* Bottom section - Profile */}
-        <div className="border-t border-gray-100">
-          <div className="group relative py-4 px-2">
-            <div className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
-                {currentUser.avatar ? (
-                  <img
-                    src={currentUser.avatar}
-                    alt="Profile"
-                    className="w-full h-full rounded-xl object-cover"
-                  />
-                ) : (
-                  <IconUser size={20} className="text-indigo-600" />
-                )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {currentUser.name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {currentUser.status}
+                  </p>
+                </div>
+
+                <IconChevronUp
+                  size={16}
+                  className="text-gray-400 transform transition-transform group-hover:text-indigo-600"
+                />
               </div>
 
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
-                  {currentUser.name}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {currentUser.status}
-                </p>
-              </div>
-
-              <IconChevronUp
-                size={16}
-                className="text-gray-400 transform transition-transform group-hover:text-indigo-600"
-              />
-            </div>
-
-            {/* Dropdown Menu - appears on hover */}
-            <div className="absolute bottom-full left-0 w-full mb-2 hidden group-hover:block">
-              <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2">
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                >
-                  View Profile
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                >
-                  Settings
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
-                >
-                  Sign Out
-                </a>
+              {/* Dropdown Menu - appears on hover */}
+              <div className="absolute bottom-full left-0 w-full mb-2 hidden group-hover:block">
+                <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2">
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    View Profile
+                  </a>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    Settings
+                  </a>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                  >
+                    Sign Out
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -515,39 +659,107 @@ export default function AIPeoplePage() {
       </div>
 
       {/* Main Content */}
-      <main className="ml-64 p-8">
-        <div className="max-w-[calc(100vw-16rem)] mx-auto">
-          <div className="relative">
-            <div
-              className={`flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide ${
-                isSearchMode ? "overflow-x-hidden" : ""
-              }`}
-            >
-              <InfiniteCarousel
-                speed={isSearchMode ? 0 : 25}
-                direction="left"
-                itemWidth={280}
-                gap={24}
-                searchMode={isSearchMode}
-              >
-                {filteredProfiles.map((profile) => (
-                  <div
-                    key={profile.id}
-                    className="w-[280px] h-[420px] flex-shrink-0 snap-center"
-                  >
-                    <ProfileCard
-                      profile={profile}
-                      onClick={() => setSelectedProfile(profile)}
+      <main className="md:pl-[20rem] p-8 text-grey-700">
+        <div className="flex flex-col h-[80vh]">
+          {activeTab === "messages" ? (
+            <div className="flex items-center justify-center h-full">
+              {!hasMessages ? (
+                // Show carousel only when there are no messages
+                <div className="w-full max-w-2xl bg-white/5 backdrop-blur-sm rounded-2xl p-2 mt-2">
+                  <div className="flex flex-col gap-8">
+                    <ProfileCarousel
+                      profiles={profiles}
+                      speed={2}
+                      direction="ltr"
+                      variant="profile"
+                    />
+                    <ProfileCarousel
+                      key="question"
+                      profiles={Array(6).fill(null)}
+                      speed={2.5}
+                      direction="rtl"
+                      variant="question"
+                      questionPrompts={questionPrompts}
+                    />
+                    <ProfileCarousel
+                      key="statements"
+                      profiles={Array(6).fill(null)}
+                      speed={1}
+                      direction="ltr"
+                      variant="statement"
+                      statementPrompts={statementPrompts}
                     />
                   </div>
-                ))}
-              </InfiniteCarousel>
+                </div>
+              ) : (
+                // Show messages when they exist
+                <div className="space-y-4 w-full max-w-3xl mx-auto">
+                  {aiMessages.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-4 rounded-2xl shadow-sm max-w-[85%] ${
+                        msg.role === "assistant"
+                          ? "bg-white/90 text-gray-800 ml-0"
+                          : "bg-indigo-600 text-white ml-auto"
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {profiles.map((profile) => (
+                <ProfileCard
+                  key={profile.id}
+                  profile={profile}
+                  onSelect={setSelectedProfile}
+                />
+              ))}
+            </div>
+          )}
         </div>
-
         {/* Updated Floating Chat Input */}
-        <div className="fixed bottom-8 right-8 left-[280px] max-w-3xl mx-auto">
+        <div className="fixed bottom-8 right-8 left-[280px] max-w-3xl mx-auto text-grey-800">
+          <button
+            onClick={() => setShowIcebreakers(!showIcebreakers)}
+            className="absolute -top-12 left-4 px-3 py-1.5 bg-white/80 backdrop-blur-md 
+               border border-gray-200 rounded-full text-sm text-gray-600
+               hover:bg-gray-50 transition-all shadow-sm
+               flex items-center gap-2"
+          >
+            <span className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></span>
+            Icebreakers
+          </button>
+
+          {/* Icebreakers Container */}
+          {showIcebreakers && activeIcebreakers.length > 0 && (
+            <div className="mb-4 animate-fade-in-up">
+              <div className="bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg p-4">
+                <h4 className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wide">
+                  AI-Powered Icebreakers
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {activeIcebreakers.map((icebreaker) => (
+                    <button
+                      key={icebreaker}
+                      onClick={() => {
+                        handleAIAction(icebreaker);
+                        setShowIcebreakers(false);
+                        handlePromptSelection(icebreaker);
+                      }}
+                      className="px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm 
+                       hover:bg-indigo-100 transition-colors whitespace-nowrap"
+                    >
+                      {icebreaker}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           {isSearchMode && (
             <div className="mb-2 flex justify-end search-badge">
               <span className="px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-medium">
@@ -558,7 +770,7 @@ export default function AIPeoplePage() {
 
           <div className="bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg p-4">
             <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
+              <div className="flex-1 relative text-grey-800">
                 <input
                   type="text"
                   value={inputValue}
@@ -576,7 +788,7 @@ export default function AIPeoplePage() {
                   aria-label={
                     isSearchMode ? "Search profiles" : "Message input"
                   }
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 
+                  className="text-gray-700 w-full px-4 py-3 rounded-xl border border-gray-200 
                              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 
                              outline-none transition-all bg-white/50 disabled:opacity-50"
                   disabled={isLoading}
@@ -608,8 +820,80 @@ export default function AIPeoplePage() {
           profile={selectedProfile}
           onClose={() => setSelectedProfile(null)}
           isOpen={!!selectedProfile}
-        />
+        >
+          <button
+            onClick={() =>
+              handleAIAction(`Start collaboration with ${selectedProfile.name}`)
+            }
+            className="w-full py-2 px-4 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+          >
+            🤖 Start AI-Powered Collab
+          </button>
+        </ProfileSidebar>
       )}
+
+      <div className="space-y-4">
+        {/* AI Messages */}
+        <div className="space-y-4 max-w-3xl mx-auto mb-6">
+          {aiMessages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-4 rounded-2xl shadow-sm max-w-[85%] ${
+                msg.role === "assistant"
+                  ? "bg-white/90 text-gray-800 ml-0"
+                  : "bg-indigo-600 text-white ml-auto"
+              }`}
+            >
+              {msg.content}
+            </div>
+          ))}
+        </div>
+
+        {/* Suggestions Container */}
+        <div className="space-y-6 max-w-3xl mx-auto">
+          {/* Connection Suggestions */}
+          {connectionSuggestions.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                Similar Profiles
+              </h4>
+              <div className="grid gap-2">
+                {connectionSuggestions.map((profile) => (
+                  <button
+                    key={profile.id}
+                    onClick={() => setSelectedProfile(profile)}
+                    className="w-full p-4 text-left bg-gradient-to-r from-blue-50 to-indigo-50 
+                     rounded-xl hover:from-blue-100 hover:to-indigo-100 
+                     transition-colors duration-200 shadow-sm group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          {profile.name}
+                        </p>
+                        <p className="text-sm text-gray-600">{profile.role}</p>
+                      </div>
+                      <svg
+                        className="w-5 h-5 text-gray-400 group-hover:text-indigo-500 transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

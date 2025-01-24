@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   html {
     font-size: calc(14px + 0.390625vw);
@@ -16,7 +15,6 @@
   --accent: #3b82f6;
 }
 
-
 * {
   margin: 0;
   padding: 0;
@@ -29,7 +27,20 @@ body {
   font-family: var(--font-readex), Arial, sans-serif;
   overflow-x: hidden;
 }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -370,16 +381,16 @@ body {
   .scrollbar-thin::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }

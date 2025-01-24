@@ -15,6 +15,8 @@ interface Profile {
   bio?: string;
   location?: string;
   company?: string;
+  collaborationPotential?: number;
+  commonInterests?: string[];
 }
 
 interface ProfileSidebarProps {

@@ -24,4 +24,14 @@ interface Profile {
     twitter?: string;
     linkedin?: string;
   };
+  collaborationPotential: number;
+  commonInterests: string[];
+}
+interface CarouselProps {
+  profiles: Profile[];
+  speed: number;
+  direction?: "ltr" | "rtl";
+  variant?: "profile" | "question" | "statement";
+  questionPrompts?: string[];
+  statementPrompts?: string[];
 }
